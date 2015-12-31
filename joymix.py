@@ -168,7 +168,8 @@ class mixthread(threading.Thread):
 
             for i in range(len(val)):
                 if lastset[i] != val[i]:
-                    call(["amixer", "set", chans[i], str(val[i])], stdout=None, stderr=sys.stderr)
+                    print("{}: {} -> {}".format(axes[i], chans[i], val[i]))
+                    call(["amixer", "set", chans[i], str(val[i])], stdout=open("/dev/null", "w"))
                     lastset[i] = val[i]
 
             last = time.time()
@@ -190,7 +191,6 @@ while True:
                 fvalue = 0.5 - pvalue / 32767.0 / 2 #scale value to 0-1
                 if axis in inv: fvalue = 1-fvalue
                 fvalue = int(fvalue*ranges[axisid])
-                print("{}: {} -> {}".format(axis, chans[axisid], fvalue))
                 val[axisid] = fvalue
 
     else:
